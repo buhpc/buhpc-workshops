@@ -70,13 +70,16 @@ int main(int argc, char* argv[]) {
     // stop timer
     clock_gettime(CLOCK_REALTIME, &time2);
 
-    printf("=== PI Value:\n %.100lf\n", pi);
+    printf("=== Pi Value:\n %.100lf\n", pi);
+
+    // score is calculated by estimating the number of steps using the expected reimann sums error
+    // and then finding the amortized time per step
     timestamp = diff(time1,time2);
     long double runtime = (long int)((double)(CPG)*(double)(GIG * timestamp.tv_sec + timestamp.tv_nsec));
     long double num_steps_estimated = 1.0/(8.0*fabs(PI-pi));
     
+    // calculate score based on amount of work per number of vertical boxes
     long double score = runtime / num_steps_estimated;
-
     printf("=== SCORE: \n %Lf\n\n", score);
 }
 
