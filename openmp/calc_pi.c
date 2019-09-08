@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     clock_gettime(CLOCK_REALTIME, &time1);
     
     // parallelize like this
-    // #pragma omp...
+    // #pragma omp..
     for (i = 0; i < num_boxes; i++) {
         // add the area of box to running sum
         integral += height(x)*delta;
