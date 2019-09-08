@@ -15,7 +15,7 @@ int main()
 	auto start = std::chrono::system_clock::now();
 
 	//comment out this line for serial for loop
-	#pragma omp parallel for
+	//#pragma omp parallel for
 	for(int i=0; i<N_THREAD; i++)
 	{
 
