@@ -1,7 +1,7 @@
-//#include <iostream>
+#include <iostream>
 #include <stdio.h>
 #include <omp.h>
-#include <time.h>
+#include <chrono>
 
 #define N_THREAD 10
 
@@ -12,7 +12,7 @@ int main()
 	printf("=== Begin OpenMP Example\n");
 
 	//begin timing 
-	clock_t start = clock();
+	auto start = std::chrono::system_clock::now();
 
 	//comment out this line for serial for loop
 	#pragma omp parallel for
@@ -36,8 +36,10 @@ int main()
 	}
 
 	//stop timing 
-	clock_t end = clock();
+	auto end = std::chrono::system_clock::now();
+
+	auto elapsed_seconds = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
 
 	//display runtime
-	printf("\nruntime: %.5f ms\n\n", (double)(end-start)/CLOCKS_PER_SEC*100);
+	std::cout << "\nruntime:" << elapsed_seconds.count() << " ms\n\n";
 }

@@ -6,7 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <omp.h>
-#include <time.h>
+#include <iostream>
+#include <chrono>
 
 // first 100 or so digits of pi
 // taken from https://www.piday.org/million/
@@ -25,9 +26,6 @@ double height(double x) {
 }
 
 int main(int argc, char* argv[]) {
-    struct timespec diff(struct timespec start, struct timespec end);
-    struct timespec time1, time2;
-    struct timespec timestamp;
 
     double pi = 0, integral;
     long int num_boxes = 1000000000;
@@ -41,7 +39,7 @@ int main(int argc, char* argv[]) {
     omp_set_num_threads(NUM_THREADS);
 
     // start timer
-    clock_gettime(CLOCK_REALTIME, &time1);
+    auto start = std::chrono::system_clock::now();
     
     // parallelize like this
     // #pragma omp..
@@ -57,7 +55,7 @@ int main(int argc, char* argv[]) {
     pi = 4*integral;
 
     // stop timer
-    clock_gettime(CLOCK_REALTIME, &time2);
+    auto end = std::chrono::system_clock::now();
 
     printf("=== Pi Value:\n %.100lf\n", pi);
     if (fabs(PI-pi) < 1e-8) {
@@ -65,20 +63,9 @@ int main(int argc, char* argv[]) {
     }
 
     // calculate runtime
-    timestamp = diff(time1,time2);
-    long double runtime = (long int)((double)(CPG)*(double)(GIG * timestamp.tv_sec + timestamp.tv_nsec));
-    printf("=== RUNTIME: \n %Lf\n\n", runtime);
+    auto elapsed_seconds = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
+
+    //display runtime
+    std::cout << "\nruntime:" << elapsed_seconds.count() << " ms\n\n";
 }
 
-struct timespec diff(struct timespec start, struct timespec end)
-{
-  struct timespec temp;
-  if ((end.tv_nsec-start.tv_nsec)<0) {
-    temp.tv_sec = end.tv_sec-start.tv_sec-1;
-    temp.tv_nsec = GIG+end.tv_nsec-start.tv_nsec;
-  } else {
-    temp.tv_sec = end.tv_sec-start.tv_sec;
-    temp.tv_nsec = end.tv_nsec-start.tv_nsec;
-  }
-  return temp;
-}
