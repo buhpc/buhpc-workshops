@@ -18,7 +18,7 @@
 #define GIG 1000000000
 
 // specify how many threads
-#define NUM_THREADS 2
+#define NUM_THREADS 8
 
 // calculate height of this vertical box
 double height(double x) {
@@ -35,6 +35,8 @@ int main(int argc, char* argv[]) {
     long double x = 0;
 
     int i;
+
+
     // set number of threads
     omp_set_num_threads(NUM_THREADS);
 
@@ -44,10 +46,11 @@ int main(int argc, char* argv[]) {
     // parallelize like this
     // #pragma omp..
     for (i = 0; i < num_boxes; i++) {
+
+        x = i*delta;        
         // add the area of box to running sum
         integral += height(x)*delta;
 
-        x = i*delta;
     }
 
     // we are only computing the integral in quadrant I
