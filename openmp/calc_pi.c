@@ -44,7 +44,8 @@ int main(int argc, char* argv[]) {
     auto start = std::chrono::system_clock::now();
     
     // parallelize like this
-    #pragma omp parallel for private(x,i) reduction(+:integral)
+
+    #pragma omp parallel for private(x, i) reduction(+:integral)
     for (i = 0; i < num_boxes; i++) {
 
         x = i*delta;        
