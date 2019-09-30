@@ -37,8 +37,7 @@ int main()
 			bool isPrime=true;
 			unsigned long long int targetNum = sqrt(num);
 			unsigned long long int counter=3;
-			//p
-			#pragma omp parallel for
+			
 			for(counter=3; targetNum >= counter; counter+=2)
 			{
 				if(num%counter==0)
