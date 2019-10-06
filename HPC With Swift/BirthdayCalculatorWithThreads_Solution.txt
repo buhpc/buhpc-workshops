@@ -1,0 +1,42 @@
+import Foundation
+
+// Included in Code
+class Person {
+    var myName: String = ""
+    var myAge: Int = 0
+    
+    init(name: String, age: Int) {
+        self.myName = name
+        self.myAge = age
+    }
+    
+    func birthday() {
+        self.myAge += 1
+    }
+}
+
+// 1. Make a person class with your name and age
+var personName = Person(name: "Norman Ariel", age: 19)
+
+// 2. Write this thread
+class NextBirthdayCalculator: Thread {
+  override func main() {
+    print("Let's see how old I'll be next year.")
+    personName.birthday()
+  }
+}
+
+let BirthdayThread = NextBirthdayCalculator()
+
+print("\(personName.myName) is \(personName.myAge) years old.")
+print()
+
+
+BirthdayThread.start()
+
+// 3. Add this loop to fix concurrency problem
+while (!BirthdayThread.isFinished) {
+    // Nothing, waiting for thread to finish
+}
+
+print("Next year I will be \(personName.myAge) years old.")

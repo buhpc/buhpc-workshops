@@ -1,0 +1,15 @@
+import Foundation
+
+class Person {
+    var myName: String = ""
+    var myAge: Int = 0
+    
+    init(name: String, age: Int) {
+        self.myName = name
+        self.myAge = age
+    }
+    
+    func birthday() {
+        self.myAge += 1
+    }
+}
