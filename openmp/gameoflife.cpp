@@ -37,17 +37,19 @@ int main()
     //*********************************************
     
     //print
-    cout<<"----------\n";
-    cout<<0<<endl;
-    for(int i = 0;i<GRID_SIZE;i++){
-        for(int j = 0;j<GRID_SIZE;j++){
-            if(grid[i][j])
-                cout<<"  ";
-            else cout<<"\u2588\u2588"; 
+    if(PRINT_ENABLE){
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        cout<<"----------\n"<<0<<endl;
+        for(int i = 0;i<GRID_SIZE;i++){
+            for(int j = 0;j<GRID_SIZE;j++){
+                if(grid[i][j])
+                    cout<<"\u2588\u2588";
+                else cout<<"  "; 
+            }
+            cout<<endl;
         }
-        cout<<endl;
-    }
-    cout<<"----------\n";
+        cout<<"----------\n";
+        }
 
     for(int t = 0;t<NUMBER_OF_STEPS;t++)
     {
