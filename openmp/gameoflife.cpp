@@ -38,15 +38,6 @@ int main()
     
     //print
     cout<<"----------\n";
-    for(int i = 0;i<GRID_SIZE;i++){
-        for(int j = 0;j<GRID_SIZE;j++){
-            cout<<grid[i][j]?"  " : "\u2588\u2588";
-        }
-        cout<<endl;
-    }
-    cout<<"----------\n";
-    //print
-    cout<<"----------\n";
     cout<<0<<endl;
     for(int i = 0;i<GRID_SIZE;i++){
         for(int j = 0;j<GRID_SIZE;j++){
@@ -97,7 +88,7 @@ int main()
 
         //Only prints if PRINT_ENABLE is true
         if(PRINT_ENABLE){
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
         cout<<"----------\n"<<t+1<<endl;
         for(int i = 0;i<GRID_SIZE;i++){
             for(int j = 0;j<GRID_SIZE;j++){
