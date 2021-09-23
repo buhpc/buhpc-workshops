@@ -19,9 +19,9 @@
 using namespace std;
 
 #define NUMBER_OF_STEPS 100
-#define GRID_SIZE 64
+#define GRID_SIZE 64 //increase this value for more parallel computation
 //set PRINT_ENABLE to true to see nice looking (and slow) graphics
-#define PRINT_ENABLE false
+#define PRINT_ENABLE true 
 
 int main()
 {
@@ -56,7 +56,7 @@ int main()
         bool nextgrid[GRID_SIZE][GRID_SIZE];
 
         
-        //LOOK HERE, THIS OUTER FOOR LOOP LOOKS MIGHTY PARALLELIZABLE IF YOU ASK ME********************
+        //LOOK HERE, THIS OUTER FOR LOOP LOOKS MIGHTY PARALLELIZABLE IF YOU ASK ME********************
 
         for(int i = 0;i<GRID_SIZE;i++)
             for(int j = 0;j<GRID_SIZE;j++)
@@ -72,7 +72,7 @@ int main()
                 //1.Any live cell with fewer than two live neighbours dies, as if caused by under-population
                 //2.Any live cell with two or three live neighbours lives on to the next generation.
                 //3.Any live cell with more than three live neighbours dies, as if by over-population.
-                //If cell is dead
+                //If cell is alive
                 if(grid[i][j])
                     nextgrid[i][j] = (nliveneighbors==2)||(nliveneighbors==3);
                 //4.Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
