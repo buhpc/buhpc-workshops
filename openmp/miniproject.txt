@@ -1,0 +1,8 @@
+1. Write a function that takes in a 2d array as an input, and for each cell (excluding corners and edges)calculates the average of that cell and all of their adjacent neighbors.
+    e.g., array A = [1, 1,  1,  1,  1, 
+                     2, 7,  8,  9,  10,
+                     6,-1, 0, -5 -10]
+          output = [1,  1,  1,  1,  1,
+                    2,  3.4,5,  23, 1,
+                    6,  -1, 0,  -5, -10]
+    Then, try parallelizing it with OpenMP
