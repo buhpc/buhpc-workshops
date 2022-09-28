@@ -11,3 +11,6 @@ all: ${exe_files}
 	$(CC) $(LDFLAGS) $(CFLAGS) $+ $(LOADLIBES) $(LDLIBS) -o $@
 clean:
 	rm -f *.o $(exe_files) *~
+
+gameoflife:
+	g++ gameoflife.cpp -o gameoflife -fopenmp
