@@ -2,24 +2,25 @@
 #include <time.h>
 #include <stdlib.h>
 #include <omp.h>
-#define SIZE 2000
-void MMM(double A[SIZE][SIZE], double B[SIZE][SIZE], double C[SIZE][SIZE]){
-    double sum;
-    omp_set_num_threads(4);
-    #pragma omp parallel for private(sum)
-    for(int i=0;i<SIZE;i++){
-        for(int j=0;j<SIZE;j++){
-            
-            
-            sum=0;
-            for(int k=0;k<SIZE;k++){
-                sum+=A[i][k]*B[k][j];
-            }
-            C[i][j]=sum;
+#include <string.h>
 
+void MMM(double* A,double* B, double* C,int i_length, int j_length, int k_length){
+    /* matrix matrix multiply function that takes in 3 arrays A,B,C, that each represent a matrix:
+        A is a i_length by k_length matrix
+        B is a k_length by j_length matrix
+        C is the output i_length by j_length matrix
+        I reccomend trying out a i,j,k triple for loop first
 
-        }
-    }
+        Due to performance, we are using 1D arrays to represent 2D arrays, the way you index into them is like this
+        "A[i][k]" becomes "A[i*k_length + k]"
+        "B[k][j]" -> "B[k*j_length + j]"
+        "C[i][j]" -> "C[i*j_length + j]"
+
+        the output is C, you don't return anything, just modify C and set the correct values.
+
+        Once you have the code working, try with openMP
+    */
+
 }
 
 double randfrom(double min, double max) 
@@ -30,58 +31,63 @@ double randfrom(double min, double max)
 }
 
 
-void init(double A[SIZE][SIZE]){
+void init(double *A, int n_rows,int n_cols){
     srand(42);
-    for(int i = 0;i<SIZE;i++)
-        for(int j = 0;j<SIZE;j++)
-            A[i][j]=randfrom(-10,10);
+    for(int i = 0;i<n_rows*n_cols;i++)
+        A[i]=randfrom(-10,10);
 }
 
 
 int main(){
     clock_t start, end;
     double cpu_time_used;
+    int i_len = 2,
+        j_len=2,
+        k_len=3;
     
-    // double A[SIZE][SIZE] = {{1,2,3},
-    //                 {4,5,6},
-    //                 {7,8,9}};
-    // double B[SIZE][SIZE] = {{1.263,-5.263,8.2632},
-    //                   {-1.5555, 7.15, 4.523},
-    //                   {9.9999,2.3,-5}};
+    double A[i_len*k_len];
+    double B[k_len*j_len];
+    double C[i_len*j_len];
 
-    static double A[SIZE][SIZE];
-    static double B[SIZE][SIZE];
-    init(A);
-    init(B);
+    memset(C,0,i_len*j_len*sizeof(double));
+    init(A,i_len,k_len);
+    init(B,i_len,j_len);
                       
-    static double C[SIZE][SIZE]; // result
     start = clock();
-    MMM(A,B,C);
+    MMM(A,B,C,i_len,j_len,k_len);
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    if(SIZE<=5)
-        for (int i=0;i<SIZE;i++){
-            printf("[");
-            for(int j = 0;j<SIZE;j++){
-                printf("%f ",A[i][j]);
+
+    if(i_len<=5 && j_len <=5 && k_len<=5){
+        printf("A=");
+        for(int i = 0;i<i_len;i++){
+            printf("\t");
+            for(int k=0;k<k_len;k++){
+                printf("%f ",A[i*k_len + k]);
             }
-            printf("] ");
-            printf(" [");
-            for(int j = 0;j<SIZE;j++){
-                printf("%f ",B[i][j]);
-            }
-            printf("]");
-            if(i==SIZE/2)
-                printf(" = ");
-            else
-                printf("   ");
-            printf("[");
-            for(int j = 0;j<SIZE;j++){
-                printf("%f ",C[i][j]);
-            }
-            printf("] ");
             printf("\n");
         }
+        printf("\n");
+        printf("B=");
+        for(int k = 0;k<k_len;k++){
+            printf("\t");
+            for(int j=0;j<j_len;j++){
+                printf("%f ",B[k*j_len + j]);
+            }
+            printf("\n");
+        }
+        printf("\n");
+        printf("C=");
+        for(int i = 0;i<i_len;i++){
+            printf("\t");
+            for(int j=0;j<j_len;j++){
+                printf("%f ",C[i*j_len + j]);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+    
     printf("CPU time: %f\n",cpu_time_used);
     return 0;
 }
