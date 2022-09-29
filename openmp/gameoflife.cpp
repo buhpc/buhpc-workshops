@@ -19,9 +19,9 @@
 using namespace std;
 
 #define NUMBER_OF_STEPS 100
-#define GRID_SIZE 64 //increase this value for more parallel computation
+#define GRID_SIZE 1000 //increase this value for more parallel computation
 //set PRINT_ENABLE to true to see nice looking (and slow) graphics
-#define PRINT_ENABLE true 
+#define PRINT_ENABLE false 
 
 int main()
 {
@@ -31,6 +31,7 @@ int main()
     bool grid[GRID_SIZE][GRID_SIZE];
 
     //LOOK HERE, COULD THIS BE PARALLELIZED? ******
+    // #pragma omp parallel for collapse(2)
     for(int i = 0;i<GRID_SIZE;i++)
         for(int j = 0;j<GRID_SIZE;j++)
             grid[i][j]=rand()%2;
@@ -57,13 +58,14 @@ int main()
 
         
         //LOOK HERE, THIS OUTER FOR LOOP LOOKS MIGHTY PARALLELIZABLE IF YOU ASK ME********************
-
+        int nliveneighbors;
+        #pragma omp parallel for collapse(2) private(nliveneighbors)
         for(int i = 0;i<GRID_SIZE;i++)
             for(int j = 0;j<GRID_SIZE;j++)
             {
                 //Now check the rules for each individual square!
                 //for all neighbors:
-                int nliveneighbors = 0;
+                nliveneighbors = 0;
 
                 for(int I = i-1;I<=i+1;I++)
                     for(int J = j-1;J<=j+1;J++)
@@ -83,6 +85,7 @@ int main()
             }
         //LOOK HERE
         //copy nextgrid to grid
+        #pragma omp parallel for collapse(2)
         for(int i = 0;i<GRID_SIZE;i++)
             for(int j = 0;j<GRID_SIZE;j++)
                 grid[i][j]=nextgrid[i][j];

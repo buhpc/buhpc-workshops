@@ -1,4 +1,4 @@
-override CFLAGS := -Wall -Werror -fopenmp $(CFLAGS)
+override CFLAGS := -Wall -Werror -fopenmp -g $(CFLAGS)
 
 all: ${exe_files} gameoflife
 

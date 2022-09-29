@@ -20,7 +20,6 @@ void MMM(double* A,double* B, double* C,int i_length, int j_length, int k_length
 
         Once you have the code working, try with openMP
     */
-
 }
 
 double randfrom(double min, double max) 
@@ -33,25 +32,27 @@ double randfrom(double min, double max)
 
 void init(double *A, int n_rows,int n_cols){
     srand(42);
-    for(int i = 0;i<n_rows*n_cols;i++)
-        A[i]=randfrom(-10,10);
+    for(int i = 0;i<n_rows;i++)
+        for(int j = 0;j<n_cols;j++)
+            A[i*n_cols + j]=randfrom(-10,10);
 }
 
 
 int main(){
     clock_t start, end;
     double cpu_time_used;
-    int i_len = 2,
-        j_len=2,
-        k_len=3;
+    //INCREASE MATRIX SIZE TO SEE PERF BOOST
+    int i_len = 5,
+        j_len=4,
+        k_len=3; 
     
-    double A[i_len*k_len];
-    double B[k_len*j_len];
-    double C[i_len*j_len];
+    double* A = calloc(i_len*k_len,sizeof(double));
+    double* B = calloc(k_len*j_len,sizeof(double));
+    double* C = calloc(i_len*j_len,sizeof(double));
 
     memset(C,0,i_len*j_len*sizeof(double));
     init(A,i_len,k_len);
-    init(B,i_len,j_len);
+    init(B,k_len,j_len);
                       
     start = clock();
     MMM(A,B,C,i_len,j_len,k_len);
@@ -89,5 +90,8 @@ int main(){
     }
     
     printf("CPU time: %f\n",cpu_time_used);
+    free(A);
+    free(B);
+    free(C);
     return 0;
 }
