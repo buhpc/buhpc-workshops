@@ -39,12 +39,10 @@ void init(double *A, int n_rows,int n_cols){
 
 
 int main(){
-    clock_t start, end;
     double cpu_time_used;
-    //INCREASE MATRIX SIZE TO SEE PERF BOOST
-    int i_len = 5,
+    int i_len=3,
         j_len=4,
-        k_len=3; 
+        k_len=5; 
     
     double* A = calloc(i_len*k_len,sizeof(double));
     double* B = calloc(k_len*j_len,sizeof(double));
@@ -54,12 +52,11 @@ int main(){
     init(A,i_len,k_len);
     init(B,k_len,j_len);
                       
-    start = clock();
+    cpu_time_used = omp_get_wtime();
     MMM(A,B,C,i_len,j_len,k_len);
-    end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    cpu_time_used = omp_get_wtime() - cpu_time_used;
 
-    if(i_len<=5 && j_len <=5 && k_len<=5){
+    if(i_len<=10 && j_len <=10 && k_len<=10){
         printf("A=");
         for(int i = 0;i<i_len;i++){
             printf("\t");
